@@ -1,0 +1,7 @@
+{
+    "description": "%%COMMENT%%",
+    "name": "%%PORTNAME%%",
+    "system": ["freebsd_%%MACHINE%%"],
+    "url": "https://github.com/trombik/toolchain-xtensa32",
+    "version": "%%PORTVERSION%%"
+}

@@ -142,6 +142,15 @@ do-build:
 # prevent the log from being included in the archive
 	${RM} ${WRKSRC}/builds/xtensa-esp32-elf/build.log.bz2
 
+# add package.json
+	${CP} ${FILESDIR}/package.json ${WRKSRC}/builds/xtensa-esp32-elf/
+	${REINPLACE_CMD} -e 's|%%COMMENT%%|${COMMENT}|' \
+		-e 's|%%PORTNAME%%|${PORTNAME}|' \
+		-e 's|%%MACHINE%%|${MACHINE}|' \
+		-e 's|%%PORTVERSION%%|${PORTVERSION}|' \
+		${WRKSRC}/builds/xtensa-esp32-elf/package.json
+	${RM} ${WRKSRC}/builds/xtensa-esp32-elf/package.json.bak
+
 	${TAR} -C ${WRKSRC}/builds/xtensa-esp32-elf -cz \
 		-f ${WRKSRC}/builds/${PORTNAME}-freebsd_${MACHINE}-${PORTVERSION}.tar.gz .
 
