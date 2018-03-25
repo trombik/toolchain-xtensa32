@@ -37,7 +37,6 @@ ${VERSION} with the actual version number.
 
 ```
 > mkdir -p ~/.platformio/packages/toolchain-xtensa32
-> cd ~/.platformio/packages/toolchain-xtensa32
 > tar -x -C ~/.platformio/packages/toolchain-xtensa32 \
     -f /usr/local/share/toolchain-xtensa32/toolchain-xtensa32-freebsd_amd64-${VERSION}.tar.gz
 ```
