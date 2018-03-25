@@ -1,9 +1,10 @@
 # `toolchain-xtensa32` for FreeBSD
 
-This port builds [a forked
-crosstool-NG](https://github.com/espressif/crosstool-NG) and creates a package
-archive, `toolchain-xtensa32` for ESP32 platform.io environment. [The official
-package repository](https://bintray.com/platformio/dl-packages/toolchain-xtensa32)
+This port builds
+[a forked crosstool-NG](https://github.com/espressif/crosstool-NG) and creates
+a package archive, `toolchain-xtensa32` for
+[ESP32 platform.io environment](https://github.com/platformio/platform-espressif32).
+[The official package repository](https://bintray.com/platformio/dl-packages/toolchain-xtensa32)
 currently does not provide the package for FreeBSD. You can build your own.
 
 ## Requirements
