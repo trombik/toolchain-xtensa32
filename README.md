@@ -33,7 +33,7 @@ The archive is installed under `/usr/local/share/toolchain-xtensa32` by
 default.
 
 Create the package directory and extract the archive. Be sure to replace
-${VERSION} with the actual version number.
+`${VERSION}` in the instruction below  with the actual version number.
 
 ```
 > mkdir -p ~/.platformio/packages/toolchain-xtensa32
