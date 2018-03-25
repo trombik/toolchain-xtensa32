@@ -1,0 +1,70 @@
+--- scripts/crosstool-NG.sh.in.orig	2018-01-09 11:06:47 UTC
++++ scripts/crosstool-NG.sh.in
+@@ -227,7 +227,7 @@ CT_SYS_REVISION=$(uname -r)
+ CT_SYS_OS=$(uname -s)
+ CT_SYS_MACHINE=$(uname -m)
+ CT_SYS_PROCESSOR=$(uname -p)
+-CT_SYS_GCC=$(gcc -dumpversion)
++CT_SYS_GCC=$(%%CC%% -dumpversion)
+ CT_SYS_TARGET=$(CT_DoConfigGuess)
+ CT_TOOLCHAIN_ID="crosstool-${CT_VERSION} build ${CT_STAR_DATE_HUMAN} by ${CT_SYS_USER}@${CT_SYS_HOSTNAME}"
+ 
+@@ -416,7 +416,7 @@ if [ -z "${CT_RESTART}" ]; then
+             t="${!r}-"
+         fi
+ 
+-        for tool in ar as dlltool gcc g++ gcj gnatbind gnatmake ld nm objcopy objdump ranlib strip windres; do
++        for tool in ar as dlltool %%CC%% %%CXX%% gcj gnatbind gnatmake ld nm objcopy objdump ranlib strip windres; do
+             # First try with prefix + suffix
+             # Then try with prefix only
+             # Then try with suffix only, but only for BUILD, and HOST iff REAL_BUILD == REAL_HOST
+@@ -445,12 +445,12 @@ if [ -z "${CT_RESTART}" ]; then
+             else
+                 case "${tool}" in
+                     # We'll at least need some of them...
+-                    ar|as|gcc|ld|nm|objcopy|objdump|ranlib)
++                    ar|as|%%CC%%|ld|nm|objcopy|objdump|ranlib)
+                         CT_Abort "Missing: '${t}${tool}${!s}' or '${t}${tool}' or '${tool}' : either needed!"
+                         ;;
+                     # Some are conditionnally required
+                     # Add them in alphabetical (C locale) ordering
+-                    g++)
++                    %%CXX%%)
+                         # g++ (needed for companion lib), only needed for HOST
+                         CT_TestAndAbort "Missing: '${t}${tool}${!s}' or '${t}${tool}' or '${tool}' : either needed!" "${m}" = "HOST"
+                         ;;
+@@ -535,7 +535,7 @@ if [ -z "${CT_RESTART}" ]; then
+     # Now that we've set up $PATH and $CT_CFLAGS_FOR_HOST, sanity test that gcc
+     # is runnable so that the user can troubleshoot problems if not.
+     CT_DoStep DEBUG "Checking that we can run gcc -v"
+-    CT_DoExecLog DEBUG "${CT_HOST}-gcc" -v
++    CT_DoExecLog DEBUG "${CT_HOST}-%%CC%%" -v
+     CT_EndStep
+ 
+     # Create a simple C program for testing.
+@@ -544,14 +544,14 @@ if [ -z "${CT_RESTART}" ]; then
+     gccout="${CT_BUILD_DIR}/.gccout"
+ 
+     CT_DoStep DEBUG "Checking that gcc can compile a trivial program"
+-    CT_DoExecLog DEBUG "${CT_HOST}-gcc" ${CT_CFLAGS_FOR_HOST} ${CT_LDFLAGS_FOR_HOST} "${testc}" -o "${gccout}"
++    CT_DoExecLog DEBUG "${CT_HOST}-%%CC%%" ${CT_CFLAGS_FOR_HOST} ${CT_LDFLAGS_FOR_HOST} "${testc}" -o "${gccout}"
+     rm -f "${gccout}"
+     CT_EndStep
+ 
+     if [ "${CT_WANTS_STATIC_LINK}" = "y" ]; then
+         CT_DoStep DEBUG "Checking that gcc can compile a trivial statically linked program (CT_WANTS_STATIC_LINK)"
+         CT_DoLog DEBUG "You may need to ensure that static libraries such as libc.a are installed on your system"
+-        CT_DoExecLog DEBUG "${CT_HOST}-gcc" ${CT_CFLAGS_FOR_HOST} ${CT_LDFLAGS_FOR_HOST} "${testc}" -static -o "${gccout}"
++        CT_DoExecLog DEBUG "${CT_HOST}-%%CC%%" ${CT_CFLAGS_FOR_HOST} ${CT_LDFLAGS_FOR_HOST} "${testc}" -static -o "${gccout}"
+         rm -f "${gccout}"
+         CT_EndStep
+     fi
+@@ -559,7 +559,7 @@ if [ -z "${CT_RESTART}" ]; then
+     if [ "${CT_CC_GCC_STATIC_LIBSTDCXX}" = "y" ]; then
+         CT_DoStep DEBUG "Checking that gcc can statically link libstdc++ (CT_CC_GCC_STATIC_LIBSTDCXX)"
+         CT_DoLog DEBUG "You may need to ensure that libstdc++.a is installed on your system"
+-        CT_DoExecLog DEBUG "${CT_HOST}-gcc" ${CT_CFLAGS_FOR_HOST} ${CT_LDFLAGS_FOR_HOST} "${testc}" -static -lstdc++ -o "${gccout}"
++        CT_DoExecLog DEBUG "${CT_HOST}-%%CC%%" ${CT_CFLAGS_FOR_HOST} ${CT_LDFLAGS_FOR_HOST} "${testc}" -static -lstdc++ -o "${gccout}"
+         rm -f "${gccout}"
+         CT_EndStep
+     fi
