@@ -31,3 +31,13 @@ Build and install.
 
 The archive is installed under `/usr/local/share/toolchain-xtensa32` by
 default.
+
+Create the package directory and extract the archive. Be sure to replace
+${VERSION} with the actual version number.
+
+```
+> mkdir -p ~/.platformio/packages/toolchain-xtensa32
+> cd ~/.platformio/packages/toolchain-xtensa32
+> tar -x -C ~/.platformio/packages/toolchain-xtensa32 \
+    -f /usr/local/share/toolchain-xtensa32/toolchain-xtensa32-freebsd_amd64-${VERSION}.tar.gz
+```
