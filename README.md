@@ -60,7 +60,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell",
     inline: "
     sudo pkg install -y git
-    fetch -o - https://github.com/freebsd/freebsd-ports/archive/master.tar.gz | sudo tar -C /usr -xvf - -s '/^freebsd-ports-master/ports/'
+    fetch -o - https://github.com/freebsd/freebsd-ports/archive/master.tar.gz | sudo tar -C /usr -xf - -s '/^freebsd-ports-master/ports/'
     (cd /usr/ports/devel && sudo git clone https://github.com/trombik/toolchain-xtensa32.git)
     sudo make -C /usr/ports/devel/toolchain-xtensa32
     sudo make -C /usr/ports/devel/toolchain-xtensa32 install clean
