@@ -46,8 +46,8 @@ Create the package directory and extract the archive. Be sure to replace
 
 ### Requirements
 
-* Vagrant
-* VirtualBox
+* [Vagrant](https://www.vagrantup.com/)
+* [VirtualBox](https://www.virtualbox.org/)
 
 ### `Vagrantfile`
 
