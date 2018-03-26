@@ -41,3 +41,36 @@ Create the package directory and extract the archive. Be sure to replace
 > tar -x -C ~/.platformio/packages/toolchain-xtensa32 \
     -f /usr/local/share/toolchain-xtensa32/toolchain-xtensa32-freebsd_amd64-${VERSION}.tar.gz
 ```
+
+## Building the package in a VM
+
+### Requirements
+
+* Vagrant
+* VirtualBox
+
+### `Vagrantfile`
+
+The following `Vagrantfile` builds the package in a `virtualbox` VM.
+
+```ruby
+> cat Vagrantfile
+Vagrant.configure("2") do |config|
+  config.vm.box = "trombik/ansible-freebsd-11.1-amd64"
+  config.vm.provision "shell",
+    inline: "
+    sudo pkg install -y git
+    fetch -o - https://github.com/freebsd/freebsd-ports/archive/master.tar.gz | sudo tar -C /usr -xvf - -s '/^freebsd-ports-master/ports/'
+    (cd /usr/ports/devel && sudo git clone https://github.com/trombik/toolchain-xtensa32.git)
+    sudo make -C /usr/ports/devel/toolchain-xtensa32
+    sudo make -C /usr/ports/devel/toolchain-xtensa32 install clean
+    find /usr/local/share/toolchain-xtensa32
+    "
+end
+```
+
+Run the VM by:
+
+```
+> vagrant up
+```
