@@ -25,7 +25,7 @@ BUILD_DEPENDS=	flex:textproc/flex \
 	help2man:misc/help2man \
 	gpatch:devel/patch
 
-USES=	gmake bison libtool:build python:build
+USES=	gmake bison libtool:build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	espressif
@@ -131,8 +131,13 @@ do-build:
 # set CT_ALLOW_BUILD_AS_ROOT_SURE so that it can be built by default
 # poudriere(8) as root
 	${ECHO} "CT_ALLOW_BUILD_AS_ROOT_SURE=y" >> ${WRKSRC}/.config
-# configure cannot automatically find pythonX.Y
-	${ECHO} "CT_GDB_CROSS_EXTRA_CONFIG_ARRAY='--with-python=${PYTHON_CMD}'" >> ${WRKSRC}/.config
+# build static binaries
+	${ECHO} "CT_STATIC_TOOLCHAIN=y" >> ${WRKSRC}/.config
+	${ECHO} "CT_GDB_CROSS_STATIC=y" >> ${WRKSRC}/.config
+# disable NLS
+	${ECHO} "CT_TOOLCHAIN_ENABLE_NLS=n" >> ${WRKSRC}/.config
+# disable python
+	${ECHO} "CT_GDB_CROSS_PYTHON=n" >> ${WRKSRC}/.config
 	(cd ${WRKSRC} && ${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" ./ct-ng -d build)
 
 # fix the permissions on directories, making it possible to build as a user

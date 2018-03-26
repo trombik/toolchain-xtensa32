@@ -64,7 +64,7 @@ Vagrant.configure("2") do |config|
       fetch -o - https://github.com/freebsd/freebsd-ports/archive/master.tar.gz | sudo tar -C /usr -xf - -s '/^freebsd-ports-master/ports/'
     fi
     # this is optional, but makes the build faster by installing depended packages
-    sudo pkg install -y flex gperf bash gsed gnugrep gawk autoconf texinfo help2man patch gmake bison libtool python2 wget gcc6
+    sudo pkg install -y flex gperf bash gsed gnugrep gawk autoconf texinfo help2man patch gmake bison libtool wget gcc6
     (cd /usr/ports/devel && sudo git clone https://github.com/trombik/toolchain-xtensa32.git)
     sudo make -C /usr/ports/devel/toolchain-xtensa32 -DPACKAGE_BUILDING
     sudo make -C /usr/ports/devel/toolchain-xtensa32 install clean
