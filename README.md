@@ -60,9 +60,13 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell",
     inline: "
     sudo pkg install -y git
-    fetch -o - https://github.com/freebsd/freebsd-ports/archive/master.tar.gz | sudo tar -C /usr -xf - -s '/^freebsd-ports-master/ports/'
+    if [ ! -d /usr/ports ]; then
+      fetch -o - https://github.com/freebsd/freebsd-ports/archive/master.tar.gz | sudo tar -C /usr -xf - -s '/^freebsd-ports-master/ports/'
+    fi
+    # this is optional, but makes the build faster by installing depended packages
+    sudo pkg install -y flex gperf bash gsed gnugrep gawk autoconf texinfo help2man patch gmake bison libtool python2 wget gcc6
     (cd /usr/ports/devel && sudo git clone https://github.com/trombik/toolchain-xtensa32.git)
-    sudo make -C /usr/ports/devel/toolchain-xtensa32
+    sudo make -C /usr/ports/devel/toolchain-xtensa32 -DPACKAGE_BUILDING
     sudo make -C /usr/ports/devel/toolchain-xtensa32 install clean
     find /usr/local/share/toolchain-xtensa32
     "
@@ -73,4 +77,10 @@ Run the VM by:
 
 ```
 > vagrant up
+```
+
+Copy the package archive to _the host_ from _the guest_ by;
+
+```
+> vagrant ssh -- cat /usr/local/share/toolchain-xtensa32/toolchain-xtensa32-freebsd_amd64-2.50200.80.tar.gz > toolchain-xtensa32-freebsd_amd64-2.50200.80.tar.gz
 ```
