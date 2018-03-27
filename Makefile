@@ -32,6 +32,9 @@ GH_ACCOUNT=	espressif
 GH_PROJECT=	crosstool-NG
 GH_TAGNAME=	6c4433a
 
+# output of `git describe --always --dirty`
+MY_VERSION_STRING=	crosstool-ng-1.22.0-80-g${GH_TAGNAME}
+
 # XXX should work with clang(1), but have not confirmed yet
 USE_GCC=	yes
 
@@ -94,18 +97,15 @@ post-extract:
 	${CP} ${DISTDIR}/${F:C/:.*//} ${WRKSRC}/.build/tarballs/
 .endfor
 
-do-configure:
-	(cd ${WRKSRC} && \
-		./bootstrap && \
-		${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" ./configure ${MY_CONFIGURE_ARGS} )
-
 # as `gcc` is hard-coded in scripts, fix them.
 # the build process does not like user-defined CFLAGS and CXXFLAGS.
 # -std=c++98 must be set when compiler is recent one.
-pre-build:
+pre-configure:
 	(cd ${WRKSRC} && ${REINPLACE_CMD} -e 's|%%CC%%|${CC}|g' \
 		-e 's|%%CXX%%|${CXX}|g' \
 		-e 's|%%CXXFLAGS%%|-std=c++98|g' \
+		-e 's|%%MY_VERSION_STRING%%|${MY_VERSION_STRING}|g' \
+		configure.ac \
 		scripts/crosstool-NG.sh.in \
 		scripts/build/cc/100-gcc.sh \
 		scripts/build/companion_libs/110-mpfr.sh \
@@ -117,6 +117,11 @@ pre-build:
 		scripts/build/debug/500-strace.sh \
 		scripts/build/libc/glibc.sh \
 		scripts/build/libc/newlib.sh)
+
+do-configure:
+	(cd ${WRKSRC} && \
+		./bootstrap && \
+		${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" ./configure ${MY_CONFIGURE_ARGS} )
 
 do-build:
 	(cd ${WRKSRC} && ${GMAKE})

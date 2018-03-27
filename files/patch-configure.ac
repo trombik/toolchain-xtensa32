@@ -1,5 +1,14 @@
 --- configure.ac.orig	2018-01-09 11:06:47 UTC
 +++ configure.ac
+@@ -4,7 +4,7 @@
+ AC_PREREQ([2.67])
+ AC_INIT(
+     [crosstool-NG],
+-    [m4_esyscmd_s([git describe --always --dirty])],
++    [%%MY_VERSION_STRING%%],
+     [crossgcc@sourceware.org])
+ AC_CONFIG_AUX_DIR([scripts])
+ 
 @@ -97,16 +97,6 @@ AC_ARG_WITH([install],
                     [Specify the full PATH to a BSD-compatible install]),
      [INSTALL=$withval])
