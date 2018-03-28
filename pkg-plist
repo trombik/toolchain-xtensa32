@@ -1,2 +1,2 @@
 @comment $FreeBSD$
-%%DATADIR%%/%%PORTNAME%%-freebsd_%%MACHINE%%-%%PORTVERSION%%.tar.gz
+%%DATADIR%%/%%MY_ARCHIVE_FILENAME%%

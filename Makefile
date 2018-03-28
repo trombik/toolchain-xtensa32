@@ -53,9 +53,16 @@ MY_CONFIGURE_ARGS+=	--enable-local \
 					--with-libtool=${PREFIX}/bin/libtool \
 					--with-libtoolize=${PREFIX}/bin/libtoolize
 
-PLIST_SUB+=	PORTVERSION=${PORTVERSION} \
-			MACHINE=${MACHINE} \
-			PORTNAME=${PORTNAME}
+# ABI, as in pkg -vv
+#
+# XXX in FreeBSD, ABI compatibility is kept in major release. but platform.io
+# assumes only single ABI (see `system` attribute in package.json). the
+# variable is used for the archive file name only, as replacing
+# `freebsd_%%MACHINE%%` would break installation via platform.io.
+ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
+
+MY_ARCHIVE_FILENAME=	${PORTNAME}-${ABI}-${PORTVERSION}.tar.gz
+PLIST_SUB+=	MY_ARCHIVE_FILENAME=${MY_ARCHIVE_FILENAME}
 
 # the build process would fetches the files _during_ the build, see
 # post-extract below.
@@ -137,6 +144,9 @@ do-build:
 # poudriere(8) as root
 	${ECHO} "CT_ALLOW_BUILD_AS_ROOT_SURE=y" >> ${WRKSRC}/.config
 # build static binaries
+# XXX this can be removed when:
+# * platform.io undertands FreeBSD ABI
+# * the binaries do not linked to libs under ${PREFIX}
 	${ECHO} "CT_STATIC_TOOLCHAIN=y" >> ${WRKSRC}/.config
 	${ECHO} "CT_GDB_CROSS_STATIC=y" >> ${WRKSRC}/.config
 # disable NLS
@@ -149,6 +159,8 @@ do-build:
 	${CHMOD} 755 ${WRKSRC}/builds
 	${FIND} ${WRKSRC}/builds -type d -exec ${CHMOD} 755 {} \;
 
+do-install:
+
 # prevent the log from being included in the archive
 	${RM} ${WRKSRC}/builds/xtensa-esp32-elf/build.log.bz2
 
@@ -160,13 +172,10 @@ do-build:
 		-e 's|%%PORTVERSION%%|${PORTVERSION}|' \
 		${WRKSRC}/builds/xtensa-esp32-elf/package.json
 	${RM} ${WRKSRC}/builds/xtensa-esp32-elf/package.json.bak
-
 	${TAR} -C ${WRKSRC}/builds/xtensa-esp32-elf -cz \
-		-f ${WRKSRC}/builds/${PORTNAME}-freebsd_${MACHINE}-${PORTVERSION}.tar.gz .
+		-f ${WRKSRC}/builds/${MY_ARCHIVE_FILENAME} .
 
-do-install:
 	${MKDIR} ${STAGEDIR}/${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/builds/${PORTNAME}-freebsd_${MACHINE}-${PORTVERSION}.tar.gz \
+	${INSTALL_DATA} ${WRKSRC}/builds/${MY_ARCHIVE_FILENAME} \
 		${STAGEDIR}/${DATADIR}/
-
 .include <bsd.port.post.mk>
