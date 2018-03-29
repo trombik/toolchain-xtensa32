@@ -26,7 +26,8 @@ older `esp-idf`. The git tag that the port builds can be found in `Makefile`
 (`GH_TAGNAME`).  As of this writing (2018/03/29), `esp-idf`, aka
 `framework-espidf`, is pinned to old version, and the package cannot be used
 with it. To solve the issue, the platform.io core must support multiple
-versions of a package.
+versions of a package. You have two choices; use `esp-idf` without
+platform.io, or wait for updated version of `framework-espidf`.
 
 ## Requirements
 
