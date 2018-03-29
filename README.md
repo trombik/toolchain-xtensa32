@@ -7,6 +7,27 @@ a package archive, `toolchain-xtensa32` for
 [The official package repository](https://bintray.com/platformio/dl-packages/toolchain-xtensa32)
 currently does not provide the package for FreeBSD. You can build your own.
 
+## Notes
+
+The package has been confirmed to work fine with the following configuration.
+
+```
+[env:lolin32]
+
+platform = espressif32
+framework = arduino
+board = lolin32
+```
+
+[`esp-idf`](https://github.com/espressif/esp-idf), or `framework-espidf`
+package in platform.io, requires a specific version, more precisely, a
+specific git tag, of xtensa32 tool-chain. Newer tool-chain does not support
+older `esp-idf`. The git tag that the port builds can be found in `Makefile`
+(`GH_TAGNAME`).  As of this writing (2018/03/29), `esp-idf`, aka
+`framework-espidf`, is pinned to old version, and the package cannot be used
+with it. To solve the issue, the platform.io core must support multiple
+versions of a package.
+
 ## Requirements
 
 * FreeBSD with the ports tree installed
