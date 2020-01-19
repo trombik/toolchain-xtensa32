@@ -48,8 +48,7 @@ Vagrant.configure("2") do |config|
 
     sudo mkdir -p /usr/ports/packages
     sudo mkdir -p #{ports_prefix}
-    sudo make -C /usr/ports/#{port_name} #{make_flags} package PREFIX=#{ports_prefix}
-    sudo make -C /usr/ports/#{port_name} install PREFIX=#{ports_prefix} 
+    sudo make -C /usr/ports/#{port_name} #{make_flags} package install PREFIX=#{ports_prefix}
 
     rm -rf toolchain-xtensa32
     mkdir toolchain-xtensa32
