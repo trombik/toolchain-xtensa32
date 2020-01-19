@@ -1,8 +1,0 @@
-Tool-chains for ESP32, required by platform.io.
-
-This port builds and creates an archive to be used by platform.io. The archive
-is supposed to be uploaded to:
-
-https://bintray.com/platformio/dl-packages/toolchain-xtensa32
-
-WWW: https://github.com/trombik/toolchain-xtensa32
