@@ -19,7 +19,7 @@ https://github.com/trombik/xtensa-esp32-elf
 Clone the repository.
 
 ```
-# git clone https://github.com/trombik/toolchain-xtensa32
+> git clone https://github.com/trombik/toolchain-xtensa32
 ```
 
 ## Building
