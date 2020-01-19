@@ -17,7 +17,6 @@ port_depends = %w[
 # set USE_PACKAGE_DEPENDS_ONLY so that packages can be used during the build.
 # this can fail when any of port_depends is missing for whatever reason
 make_flags = "-DBATCH -DPACKAGE_BUILDING -DUSE_PACKAGE_DEPENDS_ONLY"
-make_install_flags = "#{make_flags} PREFIX=#{ports_prefix}"
 
 package_version = "2.50200.80"
 package = {
@@ -50,7 +49,7 @@ Vagrant.configure("2") do |config|
     sudo mkdir -p /usr/ports/packages
     sudo mkdir -p #{ports_prefix}
     sudo make -C /usr/ports/#{port_name} #{make_flags} package PREFIX=#{ports_prefix}
-    sudo make -C /usr/ports/#{port_name} install
+    sudo make -C /usr/ports/#{port_name} install PREFIX=#{ports_prefix} 
 
     rm -rf toolchain-xtensa32
     mkdir toolchain-xtensa32
