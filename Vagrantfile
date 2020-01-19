@@ -6,7 +6,7 @@ ports_prefix = "/opt"
 ports_url = "https://github.com/freebsd/freebsd-ports/archive/master.tar.gz"
 port_name = "devel/xtensa-esp32-elf"
 port_repository = "https://github.com/trombik/xtensa-esp32-elf"
-port_branch = "prefix-safe"
+port_branch = "master"
 
 # XXX use "make -VRUN_DEPENDS -VBUILD_DEPENDS -VLIB_DEPENDS" instead
 port_depends = %w[
