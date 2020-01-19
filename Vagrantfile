@@ -49,9 +49,14 @@ Vagrant.configure("2") do |config|
 
     sudo mkdir -p /usr/ports/packages
     sudo mkdir -p #{ports_prefix}
-    echo sudo make -C /usr/ports/#{port_name} #{make_flags} package PREFIX=#{ports_prefix}
-    echo sudo make -C /usr/ports/#{port_name} #{make_flags} install PREFIX=#{ports_prefix}
-    echo #{Shellwords.escape(package_json)} | sudo tee #{ports_prefix}/xtensa-esp32-elf/package.json
-    tar -C #{ports_prefix} -czf toolchain-xtensa32-freebsd_amd64-#{package_version}.tar.gz xtensa-esp32-elf
+    sudo make -C /usr/ports/#{port_name} #{make_flags} package PREFIX=#{ports_prefix}
+    sudo make -C /usr/ports/#{port_name} install
+
+    rm -rf toolchain-xtensa32
+    mkdir toolchain-xtensa32
+    cp -a #{ports_prefix}/xtensa-esp32-elf/* toolchain-xtensa32/
+    echo #{Shellwords.escape(package_json)} | tee toolchain-xtensa32/package.json
+
+    tar -czf toolchain-xtensa32-freebsd_amd64-#{package_version}.tar.gz toolchain-xtensa32
     "
 end
